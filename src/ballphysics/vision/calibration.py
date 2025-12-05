@@ -159,7 +159,7 @@ def _fit_lines_to_clusters(circles: np.ndarray, labels: np.ndarray) -> np.ndarra
     
     for cluster_id in np.unique(labels):
         cluster_circles = circles[labels == cluster_id]
-        positions = cluster_circles[:, :2]
+        positions = cluster_circles[:, :2].astype(np.float32)
         
         # For vertical lines, fit x as function of y: x = my + b
         x = positions[:, 0]
