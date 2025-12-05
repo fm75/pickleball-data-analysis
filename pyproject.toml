@@ -14,6 +14,7 @@ license = {text = "MIT"}
 authors = [
     {name = "Fred Mitchell", email = "FMitchell75+software@gmail.com"}
 ]
+
 dependencies = [
     "opencv-python",
     "numpy",
@@ -22,6 +23,10 @@ dependencies = [
     "matplotlib",
     "click",
 ]
+
+[project.scripts]
+calibrate-camera = "ballphysics.scripts.calibrate_camera:calibrate_camera"
+calibrate-pegboard = "ballphysics.scripts.calibrate_pegboard:calibrate_pegboard_cli"
 
 [project.optional-dependencies]
 dev = [

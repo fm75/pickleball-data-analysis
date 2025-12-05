@@ -1,4 +1,8 @@
 import numpy as np
+from dataclasses import dataclass
+from ballphysics.vision.utils import extract_vertical_slice
+from ballphysics.vision.detection import detect_holes
+
 from sklearn.cluster import KMeans
 
 @dataclass
@@ -18,9 +22,11 @@ class PegboardCalibration:
     pegboard_angle: float
     hole_count: int
     avg_hole_radius: float
-    spacing_stats: SpacingStats
     status: str
     messages: list[str]
+
+
+
 def calibrate_pegboard(frame: np.ndarray,
                        slice_x_start: int = 800,
                        slice_x_end: int = 1200,
@@ -167,3 +173,41 @@ def _fit_lines_to_clusters(circles: np.ndarray, labels: np.ndarray) -> np.ndarra
         angles.append(angle)
     
     return np.array(angles)
+
+
+def _calculate_hole_spacings(circles: np.ndarray, labels: np.ndarray) -> np.ndarray:
+    """
+    Calculate distances between adjacent holes in each cluster.
+    
+    Uses mode of all distances as initial estimate, then filters to
+    keep only spacings between 0.9 and 1.3 times that estimate.
+    
+    Returns array of filtered spacings (in pixels).
+    """
+    all_spacings = []
+    
+    # Calculate pairwise distances within each cluster
+    for cluster_id in np.unique(labels):
+        cluster_circles = circles[labels == cluster_id]
+        positions = cluster_circles[:, :2]
+        
+        # Pairwise distances
+        for i in range(len(positions)):
+            for j in range(i + 1, len(positions)):
+                dist = np.linalg.norm(positions[i] - positions[j])
+                all_spacings.append(dist)
+    
+    all_spacings = np.array(all_spacings)
+    
+    # Find mode (most common spacing) - use histogram
+    hist, bin_edges = np.histogram(all_spacings, bins=50)
+    mode_idx = np.argmax(hist)
+    mode_estimate = (bin_edges[mode_idx] + bin_edges[mode_idx + 1]) / 2
+    
+    # Filter spacings
+    filtered = all_spacings[(all_spacings >= 0.9 * mode_estimate) & 
+                           (all_spacings < 1.3 * mode_estimate)]
+    
+    return filtered
+
+
