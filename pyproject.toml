@@ -2,6 +2,31 @@
 requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
 
+[tool.setuptools.packages.find]
+where = ["src"]
+
 [project]
-name = "Add Name Here"
+name = "ballphysics"
 version = "0.1.0"
+description = "Computer vision and physics analysis for ball sports trajectories"
+requires-python = ">=3.12"
+license = {text = "MIT"}
+authors = [
+    {name = "Fred Mitchell", email = "FMitchell75+software@gmail.com"}
+]
+dependencies = [
+    "opencv-python",
+    "numpy",
+    "scipy",
+    "scikit-learn",
+    "matplotlib",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "jupyterlab",
+]
+
+[project.urls]
+Repository = "https://github.com/fm75/pickleball-data-analysis"
