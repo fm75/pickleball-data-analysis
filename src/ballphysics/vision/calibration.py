@@ -161,15 +161,14 @@ def _fit_lines_to_clusters(circles: np.ndarray, labels: np.ndarray) -> np.ndarra
         cluster_circles = circles[labels == cluster_id]
         positions = cluster_circles[:, :2]
         
-        # Linear fit: y = mx + b
+        # For vertical lines, fit x as function of y: x = my + b
         x = positions[:, 0]
         y = positions[:, 1]
-        coeffs = np.polyfit(x, y, 1)
+        coeffs = np.polyfit(y, x, 1)
         slope = coeffs[0]
         
-        # Angle from vertical (vertical line has infinite slope)
-        # tan(angle) = 1/slope for angle from vertical
-        angle = np.degrees(np.arctan(1 / slope)) if slope != 0 else 0
+        # Angle from vertical
+        angle = np.degrees(np.arctan(slope))
         angles.append(angle)
     
     return np.array(angles)
