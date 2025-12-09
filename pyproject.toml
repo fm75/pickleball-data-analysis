@@ -27,6 +27,7 @@ dependencies = [
 [project.scripts]
 calibrate-camera = "ballphysics.scripts.calibrate_camera:calibrate_camera"
 calibrate-pegboard = "ballphysics.scripts.calibrate_pegboard:calibrate_pegboard_cli"
+compute-drag = "ballphysics.scripts.compute_drag:fit_drag_coefficient"
 
 [project.optional-dependencies]
 dev = [
