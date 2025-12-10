@@ -1,0 +1,2 @@
+ball_diameter,ball_mass,curve,folder,figure,filename,prefix,ballspec,manufacturer,model,condition,temp_f,temp_c,pressure,rmse_x,rmse_y,rmse_total,r2_x,r2_y,n_points
+2.97,27.0,2d,data,save,freefall.csv,none,,unknown,unknown,used,,20.0,29.9212,0.012922856519806247,0.011502831149280223,0.017300732501265667,0.9601768812909032,0.9999577804820318,27
